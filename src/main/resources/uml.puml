@@ -1,0 +1,47 @@
+@startuml
+class DataLoader{
+    + void run(String... args) <<throws Exception>>
+}
+interface CommandLineRunner
+class PeajeYVehiculosApplication{
+    + {static} void main(String[] args)
+}
+class VehiculoDTO {
+    - String matricula
+    - Long peajeId
+    - Categoria categoria
+    - Integer numeroDeEjes
+}
+class Vehiculo {
+    - Long id;
+    - String matricula;
+    - BigDecimal importe;
+    - Categoria categoria;
+    + enum Categoria
+        COCHE
+        CAMION
+        MOTO
+}
+interface JpaRepository
+interface PeajeRepository
+class PeajeYVehiculosService{
+    + Peaje obtenerDatosDePeajePorIdentificador(Long id)
+    + Vehiculo registrarUnVehiculo(VehiculoDTO vehiculoDTO)
+}
+class Peaje {
+    - Long id;
+    - String nombre;
+    - String ciudad;
+    - BigDecimal recaudacion;
+    - List<Vehiculo> vehiculos;
+    + void actualizarRecaudacion()
+}
+class PeajeYVehiculosController{
+    + ResponseEntity<Peaje> obtenerDatosDePeajePorIdentificador(Long peajeId)
+    + ResponseEntity<Vehiculo> registrarUnVehiculo(VehiculoDTO vehiculoDTO)
+}
+DataLoader -|> CommandLineRunner
+PeajeRepository -|> JpaRepository
+PeajeYVehiculosController --> PeajeYVehiculosService
+PeajeYVehiculosService --> PeajeRepository 
+@enduml
